@@ -2,7 +2,7 @@ package projectmd2.business.entity;
 
 import projectmd2.business.design.IOData;
 import projectmd2.business.design.IProducts;
-import projectmd2.business.feature.productsimpl.ProductsImpl;
+import projectmd2.business.feature.productsimpl.Admin.ProductsImpl;
 import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.IOFile;
 import projectmd2.business.untils.ShopConstant;
@@ -74,6 +74,9 @@ public class Category implements IOData<Category,String>, Serializable {
     @Override
     public void displayData() {
         System.out.printf("%3s | %10s | %15s | %5s | %5s \n",this.categoryId,this.categoryName,this.descriptions,this.status?"Active":"inActive",totalPrduct());
+    }
+    public void displayDataforUser() {
+        System.out.printf("%3s | %15s  \n",this.categoryId,this.categoryName);
     }
 
     @Override

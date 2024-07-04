@@ -1,11 +1,10 @@
-package projectmd2.business.feature.productsimpl;
+package projectmd2.business.feature.productsimpl.Admin;
 
 import projectmd2.business.design.IProducts;
 import projectmd2.business.entity.Products;
 import projectmd2.business.untils.IOFile;
 import projectmd2.business.untils.ShopConstant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductsImpl implements IProducts {

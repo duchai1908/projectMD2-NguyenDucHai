@@ -27,6 +27,8 @@ public class UserValidate {
                 }else {
                     System.out.println(ShopMessage.ERROR_USERNAME_EXIST);
                 }
+            }else{
+                System.err.println(ShopMessage.ERROR_USERNAME_INVALID);
             }
         }
     }

@@ -1,6 +1,7 @@
 package projectmd2.presentation.run;
 
 import projectmd2.business.design.IUser;
+import projectmd2.business.entity.User;
 import projectmd2.business.feature.userimpl.UserImpl;
 import projectmd2.business.untils.InputMethods;
 import projectmd2.business.untils.ShopMessage;
@@ -11,8 +12,8 @@ import projectmd2.presentation.admin.securityquestion.SecurityQuestionMenu;
 import java.util.Scanner;
 
 public class Main {
-    public static IUser userLits = new UserImpl();
-
+    private static IUser userLits = new UserImpl();
+    public static User userLogin = null;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -25,7 +26,7 @@ public class Main {
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
-                    SecurityQuestionMenu.showSecurityQuesttionMenu(sc);
+                    DashBoardView.showDashBoardView(sc);
                     break;
                 case 2:
                     userLits.login();
@@ -34,7 +35,8 @@ public class Main {
                     userLits.register();
                     break;
                 case 4:
-
+                    userLits.forgotPassword();
+                    break;
                 case 5:
                     System.exit(0);
                 default:

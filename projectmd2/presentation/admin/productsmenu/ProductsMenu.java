@@ -1,7 +1,6 @@
 package projectmd2.presentation.admin.productsmenu;
 
-import projectmd2.business.entity.Products;
-import projectmd2.business.feature.productsimpl.ProductsFeature;
+import projectmd2.business.feature.productsimpl.Admin.ProductsFeature;
 import projectmd2.business.untils.InputMethods;
 import projectmd2.business.untils.ShopMessage;
 

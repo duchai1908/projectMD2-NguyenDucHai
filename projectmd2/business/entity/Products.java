@@ -139,7 +139,12 @@ public class Products implements IOData<Products, String>, Serializable {
                 ,this.productId,this.productName,this.description,this.unitPrice,
                 this.category.getCategoryName(),dateFormat.format(this.createdAt),dateFormat.format(this.updatedAt));
     }
-
+    public void displayDataForUser() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.printf("%3s | %20s | %15s | %5s | %15s   \n"
+                ,this.productId,this.productName,this.description,this.unitPrice,
+                this.category.getCategoryName());
+    }
     @Override
     public int getNewId(List<Products> list, String path) {
         list = IOFile.readFromFile(path);

@@ -6,6 +6,7 @@ import projectmd2.business.untils.ShopConstant;
 import projectmd2.business.untils.Validation.UserValidate;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class User implements Serializable, IOData<User,String> {
@@ -182,6 +183,9 @@ public class User implements Serializable, IOData<User,String> {
 
     @Override
     public void displayData() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.printf("%3s | %20s | %20s | %5s | %10s | %10s | %5s | %5s \n",
+                this.id,this.userName,this.fullName,this.roleName,dateFormat.format(this.createdAt),dateFormat.format(this.updateAt),this.status,this.isDeleted);
 
     }
 

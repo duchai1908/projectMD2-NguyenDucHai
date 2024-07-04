@@ -4,7 +4,7 @@ import projectmd2.business.design.ICategory;
 import projectmd2.business.design.IProducts;
 import projectmd2.business.entity.Category;
 import projectmd2.business.feature.categoryimpl.CategoryImpl;
-import projectmd2.business.feature.productsimpl.ProductsImpl;
+import projectmd2.business.feature.productsimpl.Admin.ProductsImpl;
 import projectmd2.business.untils.InputMethods;
 import projectmd2.business.untils.ShopMessage;
 

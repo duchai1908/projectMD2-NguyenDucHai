@@ -1,4 +1,4 @@
-package projectmd2.business.feature.productsimpl;
+package projectmd2.business.feature.productsimpl.Admin;
 
 import projectmd2.business.design.IProducts;
 import projectmd2.business.entity.Products;
