@@ -1,5 +1,6 @@
 package projectmd2.presentation.user.userinformation;
 
+import projectmd2.business.feature.userimpl.user.UserOfUserImpl;
 import projectmd2.business.untils.InputMethods;
 import projectmd2.business.untils.ShopMessage;
 import projectmd2.presentation.user.addressforuser.AddressForUserMenu;
@@ -18,8 +19,10 @@ public class UserInformationMenu {
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
+                    UserOfUserImpl.displayUser();
                     break;
                 case 2:
+                    UserOfUserImpl.editUser();
                     break;
                 case 3:
                     AddressForUserMenu.addressForUserMenu();

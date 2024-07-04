@@ -186,7 +186,11 @@ public class User implements Serializable, IOData<User,String> {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         System.out.printf("%3s | %20s | %20s | %5s | %10s | %10s | %5s | %5s \n",
                 this.id,this.userName,this.fullName,this.roleName,dateFormat.format(this.createdAt),dateFormat.format(this.updateAt),this.status,this.isDeleted);
-
+    }
+    public void displayDataforUser() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.printf("%3s | %20s | %20s | %5s | %5s | %5s \n",
+                this.id,this.userName,this.fullName,this.roleName,this.status,this.isDeleted);
     }
 
     @Override
