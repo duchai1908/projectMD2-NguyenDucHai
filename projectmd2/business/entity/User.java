@@ -6,16 +6,17 @@ import projectmd2.business.untils.ShopConstant;
 import projectmd2.business.untils.Validation.UserValidate;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class User implements Serializable, IOData<User,String> {
-    private int id,wallet;
-    private String userName,password,fullName,email,phone,address,avatar;
-    private Map<String,String> securityQuestion;
+public class User implements Serializable, IOData<User, String> {
+    private int id, wallet;
+    private String userName, password, fullName, email, phone, address, avatar;
+    private Map<String, String> securityQuestion;
     private RoleName roleName;
-    private Date createdAt,updateAt;
-    private boolean status,isDeleted;
+    private Date createdAt, updateAt;
+    private boolean status, isDeleted;
 
     public User() {
 
@@ -161,7 +162,7 @@ public class User implements Serializable, IOData<User,String> {
 
     @Override
     public void inputData(Scanner sc, boolean isAdd) {
-        if(isAdd){
+        if (isAdd) {
             List<User> users = null;
             this.id = getNewId(users, ShopConstant.USER_PATH);
             this.createdAt = new Date();
@@ -174,7 +175,7 @@ public class User implements Serializable, IOData<User,String> {
         this.address = UserValidate.inputAddress();
         this.avatar = UserValidate.inputAvarta();
         this.securityQuestion = (Map<String, String>) UserValidate.inputSecurityQuestion(sc);
-        this.wallet =0;
+        this.wallet = 0;
         this.roleName = RoleName.USER;
         this.updateAt = new Date();
         this.status = true;
@@ -183,14 +184,19 @@ public class User implements Serializable, IOData<User,String> {
 
     @Override
     public void displayData() {
+        Locale localeVN = new Locale("vi","VN");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(localeVN);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        System.out.printf("%3s | %20s | %20s | %5s | %10s | %10s | %5s | %5s \n",
-                this.id,this.userName,this.fullName,this.roleName,dateFormat.format(this.createdAt),dateFormat.format(this.updateAt),this.status,this.isDeleted);
+        System.out.printf("%3s | %20s | %20s | %5s | %10s | %10s | %10s | %5s | %5s \n",
+                this.id, this.userName, this.fullName, this.roleName,currencyFormatter.format(this.wallet), dateFormat.format(this.createdAt), dateFormat.format(this.updateAt), this.status, this.isDeleted);
     }
+
     public void displayDataforUser() {
+        Locale localeVN = new Locale("vi","VN");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(localeVN);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        System.out.printf("%3s | %20s | %20s | %5s | %5s | %5s \n",
-                this.id,this.userName,this.fullName,this.roleName,this.status,this.isDeleted);
+        System.out.printf("%3s | %20s | %20s | %5s | %10s \n",
+                this.id, this.userName, this.fullName, this.roleName,currencyFormatter.format(this.wallet));
     }
 
     @Override
@@ -202,7 +208,7 @@ public class User implements Serializable, IOData<User,String> {
                 idMax = user.getId();
             }
         }
-        return idMax+1;
+        return idMax + 1;
     }
 }
 

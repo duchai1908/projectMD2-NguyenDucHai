@@ -2,6 +2,9 @@ package projectmd2.presentation.user;
 
 import projectmd2.business.untils.InputMethods;
 import projectmd2.business.untils.ShopMessage;
+import projectmd2.presentation.run.Main;
+import projectmd2.presentation.user.cartforuser.CartMenuForUser;
+import projectmd2.presentation.user.ordermenuforuser.OrderMenuForUser;
 import projectmd2.presentation.user.productforuser.ProductMenuForUser;
 import projectmd2.presentation.user.userinformation.UserInformationMenu;
 
@@ -29,12 +32,15 @@ public class HomePageView {
                     UserInformationMenu.showUserInformation();
                     break;
                 case 3:
+                    CartMenuForUser.showCartMenuForUser();
                     break;
                 case 4:
+                    OrderMenuForUser.showOrderMenuForUser();
                     break;
                 case 5:
                     break;
                 case 6:
+                    Main.userLogin = null;
                     return;
                 default:
                     System.err.println(ShopMessage.ERROR_ALERT);

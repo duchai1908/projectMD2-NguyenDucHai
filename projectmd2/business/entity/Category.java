@@ -9,6 +9,7 @@ import projectmd2.business.untils.ShopConstant;
 import projectmd2.business.untils.Validation.CategoryValidate;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -73,7 +74,7 @@ public class Category implements IOData<Category,String>, Serializable {
 
     @Override
     public void displayData() {
-        System.out.printf("%3s | %10s | %15s | %5s | %5s \n",this.categoryId,this.categoryName,this.descriptions,this.status?"Active":"inActive",totalPrduct());
+        System.out.printf("%3s | %10s | %15s | %10s | %5s \n",this.categoryId,this.categoryName,this.descriptions,this.status?"Active":"inActive",totalPrduct());
     }
     public void displayDataforUser() {
         System.out.printf("%3s | %15s  \n",this.categoryId,this.categoryName);
@@ -95,7 +96,7 @@ public class Category implements IOData<Category,String>, Serializable {
     public String toString() {
         return Colors.BLUE+ "ID: "+this.categoryId +" | Name: "+this.categoryName +Colors.RESET;
     }
-    private int totalPrduct(){
+    public int totalPrduct(){
         int count = 0;
         for(Products products: productsList.findAll()){
             if(products.getCategory().getCategoryId()== this.categoryId){
@@ -104,5 +105,6 @@ public class Category implements IOData<Category,String>, Serializable {
         }
         return count;
     }
+
 
 }

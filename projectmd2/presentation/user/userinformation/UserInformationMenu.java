@@ -13,7 +13,8 @@ public class UserInformationMenu {
             System.out.println("2. Edit User Information");
             System.out.println("3. Address User Information");
             System.out.println("4. Change Password");
-            System.out.println("5. Back");
+            System.out.println("5. Recharge");
+            System.out.println("6. Back");
             System.out.println("************************************************");
             System.out.println("Enter your choice: ");
             byte choice = InputMethods.getByte();
@@ -28,8 +29,12 @@ public class UserInformationMenu {
                     AddressForUserMenu.addressForUserMenu();
                     break;
                 case 4:
+                    UserOfUserImpl.changePassword();
                     break;
                 case 5:
+                    UserOfUserImpl.recharge();
+                    break;
+                case 6:
                     return;
                 default:
                     System.err.println(ShopMessage.ERROR_ALERT);

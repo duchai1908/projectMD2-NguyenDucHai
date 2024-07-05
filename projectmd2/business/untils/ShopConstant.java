@@ -6,4 +6,6 @@ public class ShopConstant {
     public static final String CATEGORY_PATH = "src/projectmd2/business/data/category.txt";
     public static final String PRODUCTS_PATH = "src/projectmd2/business/data/products.txt";
     public static final String ADDRESS_PATH = "src/projectmd2/business/data/address.txt";
+    public static final String CART_PATH = "src/projectmd2/business/data/cart.txt";
+    public static final String ORDER_PATH = "src/projectmd2/business/data/order.txt";
 }

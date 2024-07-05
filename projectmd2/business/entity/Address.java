@@ -94,4 +94,9 @@ public class Address implements IOData<Address,String>, Serializable {
         }
         return idMax + 1;
     }
+
+    @Override
+    public String toString() {
+        return "Id: "+this.addressId + " | Full Adress: "+this.fullAddress;
+    }
 }

@@ -2,6 +2,7 @@ package projectmd2.business.feature.userimpl;
 
 import projectmd2.business.entity.RoleName;
 import projectmd2.business.entity.User;
+import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.InputMethods;
 import projectmd2.presentation.admin.usermenu.UserMenuEditForAdmin;
 
@@ -10,13 +11,13 @@ import java.util.Scanner;
 public class UserFeature {
     private static UserImpl userList = new UserImpl();
     public static void displayUser() {
-        System.out.printf("%3s | %20s | %20s | %5s | %10s | %10s | %5s | %5s \n",
+        System.out.printf(Colors.GREEN+"%3s | %20s | %20s | %5s | %10s | %10s | %5s | %5s \n"+Colors.RESET,
                 "ID","User Name","Full Name","Role","Created","Updated","Status","Deleted");
         userList.findAll().forEach(User::displayData);
     }
 
     public static void editUser(Scanner sc) {
-        System.out.print("Enter ID user you want to edit: ");
+        System.out.print(Colors.CYAN+"Enter ID user you want to edit"+Colors.RESET);
         int userId = InputMethods.getInteger();
         User user = userList.findById(userId);
         if(user!= null) {
@@ -27,21 +28,24 @@ public class UserFeature {
     }
 
     public static void deleteUser(Scanner sc) {
-        System.out.println("Enter ID user you want to delete: ");
+        System.out.println(Colors.CYAN+"Enter ID user you want to delete"+Colors.RESET);
         int userId = InputMethods.getInteger();
         if(userList.findById(userId) != null) {
             userList.findById(userId).setDeleted(true);
             userList.save(userList.findById(userId));
+            System.out.println(Colors.GREEN+"Delete User Successfully "+Colors.RESET);
         }else{
             System.err.println("User not found");
         }
     }
 
     public static void findByName(Scanner sc) {
-        System.out.println("Enter user name you want to find");
+        System.out.println(Colors.CYAN+"Enter user name you want to find"+Colors.RESET);
         String userName = InputMethods.getString();
         User user = userList.findAll().stream().filter(u->u.getUserName().equals(userName)).findFirst().orElse(null);
         if(user != null) {
+            System.out.printf(Colors.GREEN+"%3s | %20s | %20s | %5s | %10s | %10s | %5s | %5s \n"+Colors.RESET,
+                    "ID", "User Name", "Full Name", "Role", "Created", "Updated", "Status", "Deleted");
             user.displayData();
         }else{
             System.err.println("User not found");
@@ -51,11 +55,11 @@ public class UserFeature {
     public static void displayAllRole() {
         RoleName[] roles = RoleName.values();
         int count = 1;
-        System.out.println("***************LIST ROLES***************");
+        System.out.println(Colors.CYAN+"***************LIST ROLES***************"+Colors.RESET);
         for(RoleName role : roles) {
             System.out.println(count +". " +role);
             count++;
         }
-        System.out.println("Has " + (count-1) + " roles");
+        System.out.println(Colors.GREEN+"Has " + (count-1) + " roles"+Colors.RESET);
     }
 }

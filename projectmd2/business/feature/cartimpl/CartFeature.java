@@ -1,0 +1,140 @@
+package projectmd2.business.feature.cartimpl;
+
+import projectmd2.business.design.IAddress;
+import projectmd2.business.design.ICart;
+import projectmd2.business.design.IOrder;
+import projectmd2.business.design.IProducts;
+import projectmd2.business.entity.Cart;
+import projectmd2.business.entity.Order;
+import projectmd2.business.feature.addressimpl.AddressImpl;
+import projectmd2.business.feature.orderimpl.OrderImpl;
+import projectmd2.business.feature.productsimpl.Admin.ProductsImpl;
+import projectmd2.business.untils.Colors;
+import projectmd2.business.untils.InputMethods;
+import projectmd2.presentation.run.Main;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class CartFeature {
+    private static ICart cartList = new CartImpl();
+    private static IProducts productsList = new ProductsImpl();
+    private static IAddress addressList = new AddressImpl();
+    private static IOrder orderList = new OrderImpl();
+    public static void displayCart() {
+        System.out.println(Colors.CYAN + "*************All Product In Cart **************" + Colors.RESET);
+        System.out.printf(Colors.GREEN + "%3s | %7s | %15s | %7s | %10s \n" + Colors.RESET
+                , "ID", "User Id", "Product Name", "Quantity", "Total Price");
+        cartList.findAll().stream().filter(c -> c.getUserId() == Main.userLogin.getId()).forEach(Cart::displayData);
+    }
+
+    public static void addToCart(Scanner sc) {
+        System.out.println(Colors.CYAN + "Enter Product ID you want to add to cart" + Colors.RESET);
+        int productId = InputMethods.getInteger();
+        if (productsList.findById(productId) != null) {
+            if (cartList.findAll().stream()
+                    .anyMatch(c -> c.getProducts().getProductId() == productId && c.getUserId() == Main.userLogin.getId())) {
+                Cart cartDetail = cartList.findAll().stream().
+                        filter(c -> c.getProducts().getProductId() == productId && c.getUserId() == Main.userLogin.getId())
+                        .findFirst().orElse(null);
+                System.out.println(Colors.CYAN + "That product is already in the cart,enter quantity you want to add" + Colors.RESET);
+                while (true) {
+                    int quantity = InputMethods.getInteger();
+                    if (cartDetail != null && cartDetail.getQuantity() + quantity <= productsList.findById(productId).getStockQuantity()) {
+                        cartDetail.setQuantity(cartDetail.getQuantity() + quantity);
+                        cartDetail.setTotalPrice(cartDetail.getQuantity() * cartDetail.getProducts().getUnitPrice());
+                        cartList.save(cartDetail);
+                        System.out.println(Colors.GREEN + "Added product to the cart" + Colors.RESET);
+                        break;
+                    } else {
+                        System.err.println("Out of stock");
+                    }
+                }
+            } else {
+                Cart cart = new Cart();
+                cart.inputDataCart(sc, true, productId);
+                cartList.save(cart);
+                System.out.println(Colors.GREEN + "Add to cart successfully" + Colors.RESET);
+            }
+        } else {
+            System.err.println("Product ID does not exist");
+        }
+    }
+
+    public static void removeProductFromCartById() {
+        System.out.println(Colors.CYAN + "Enter Cart ID you want to remove from Cart" + Colors.RESET);
+        int cartId = InputMethods.getInteger();
+        if (cartList.findById(cartId) != null && cartList.findById(cartId).getUserId() == Main.userLogin.getId()) {
+            cartList.deleteById(cartId);
+            System.out.println(Colors.GREEN + "Remove from cart successfully" + Colors.RESET);
+        } else {
+            System.err.println("Cart ID does not exist");
+        }
+    }
+
+
+    public static void removeAllCart() {
+        List<Cart> carts = new ArrayList<>();
+        for (Cart cart : cartList.findAll()) {
+            if (cart.getUserId() == Main.userLogin.getId()) {
+                carts.add(cart);
+            }
+        }
+        for (Cart cart : carts) {
+            cartList.deleteById(cart.getCartId());
+        }
+        System.out.println(Colors.GREEN + "Remove all cart successfully" + Colors.RESET);
+    }
+
+    public static void cartDetail() {
+        System.out.println(Colors.CYAN + "Enter Cart ID you want to change quantity" + Colors.RESET);
+        int cartId = InputMethods.getInteger();
+        if (cartList.findById(cartId) != null && cartList.findById(cartId).getUserId() == Main.userLogin.getId()) {
+            System.out.println("Enter quantity you want to change");
+            int quantity = InputMethods.getInteger();
+            if (quantity > cartList.findById(cartId).getProducts().getStockQuantity()) {
+                System.err.println("Out of stock");
+            } else {
+                cartList.findById(cartId).setQuantity(quantity);
+                cartList.findById(cartId).setTotalPrice(cartList.findById(cartId).getQuantity() * cartList.findById(cartId).getProducts().getUnitPrice());
+                cartList.save(cartList.findById(cartId));
+                System.out.println(Colors.GREEN + "Change quantity successfully" + Colors.RESET);
+            }
+        }
+    }
+
+    public static void checkOut(Scanner sc) {
+        if (cartList.findAll().stream().noneMatch(c -> c.getUserId() == Main.userLogin.getId())) {
+            System.err.println("There are no products in the cart");
+            return;
+        }
+        double sum = 0;
+        for(Cart cart : cartList.findAll()) {
+            if(cart.getUserId() == Main.userLogin.getId()) {
+                sum += cart.getTotalPrice();
+            }
+        }
+        System.out.println("**********LIST ADDRESS*********");
+        addressList.findAll().stream().filter(a -> a.getUserId() == Main.userLogin.getId()).forEach(System.out::println);
+        System.out.println("Enter the address id you want to check out");
+        int idAdress = InputMethods.getInteger();
+        if (addressList.findById(idAdress) != null) {
+            Order newOrder = new Order();
+            newOrder.inputDataOrder(sc,true,sum,addressList.findById(idAdress));
+            orderList.save(newOrder);
+            System.out.println(Colors.GREEN+"Order added successfully" + Colors.RESET);
+            List<Cart> cartsDelete = new ArrayList<>();
+            for (Cart cart : cartList.findAll()) {
+                if(cart.getUserId() == Main.userLogin.getId()) {
+                    cartsDelete.add(cart);
+                }
+            }
+            for (Cart cart : cartsDelete) {
+                cartList.deleteById(cart.getCartId());
+            }
+        }else{
+            System.err.println("Address not found");
+        }
+    }
+}

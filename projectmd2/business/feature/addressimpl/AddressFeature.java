@@ -31,7 +31,7 @@ public class AddressFeature {
         System.out.println("Enter Address ID you want to edit");
         int addressId = InputMethods.getInteger();
         Address newAddress = addressList.findById(addressId);
-        if(newAddress != null){
+        if(newAddress != null && newAddress.getUserId() == Main.userLogin.getId()){
             newAddress.inputData(sc,false);
             addressList.save(newAddress);
         }else{

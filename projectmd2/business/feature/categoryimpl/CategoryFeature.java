@@ -20,11 +20,11 @@ public class CategoryFeature {
             System.err.println("No Category Found");
             return;
         }
-        System.out.println("-----------------------------------------------------");
-        System.out.printf("%3s | %10s | %15s | %5s | %5s \n","ID","Name","Description","Status","Total Product");
+        System.out.println(Colors.CYAN+"----------------------------------------------------------------"+Colors.RESET);
+        System.out.printf("%3s | %10s | %15s | %10s | %5s \n","ID","Name","Description","Status","Total Product");
         categoryList.findAll().forEach(Category::displayData);
-        System.out.println("-----------------------------------------------------");
-        System.out.println("Has " + categoryList.findAll().size() + " categories");
+        System.out.println(Colors.CYAN+"----------------------------------------------------------------"+Colors.RESET);
+        System.out.println(Colors.GREEN+"Has " + categoryList.findAll().size() + " categories"+Colors.RESET);
     }
 
     public static void addNewCategory(Scanner sc) {
@@ -36,7 +36,7 @@ public class CategoryFeature {
             category.inputData(sc, true);
             categoryList.save(category);
         }
-        System.out.println("Add " + cateNumber + " category successfully");
+        System.out.println(Colors.GREEN+"Add " + cateNumber + " category successfully"+Colors.RESET);
     }
 
     public static void editCategoryById(Scanner sc) {
@@ -44,6 +44,7 @@ public class CategoryFeature {
             System.err.println("No Category Found");
             return;
         }
+
         System.out.println("Enter the ID of the category you want to edit: ");
         int cateID = InputMethods.getInteger();
         Category category = categoryList.findById(cateID);
@@ -53,11 +54,12 @@ public class CategoryFeature {
             System.out.println(Colors.CYAN + " New category information: "+Colors.RESET);
             category.inputData(sc,false);
             categoryList.save(category);
-            System.out.println("Edit category with ID: " + cateID + " successfully");
+            System.out.println(Colors.GREEN+"Edit category with ID: " + cateID + " successfully"+Colors.RESET);
         }else {
             System.err.println("Cant find category with ID: " + cateID);
         }
     }
+
 
     public static void deleteCategoryById(Scanner sc) {
         if(categoryList.findAll().isEmpty()){
@@ -93,10 +95,10 @@ public class CategoryFeature {
         int cateID = InputMethods.getInteger();
         Category category = categoryList.findById(cateID);
         if (category != null) {
-            System.out.println("-----------------------------------------------------");
-            System.out.printf("%3s | %10s | %15s | %5s | %5s \n","ID","Name","Description","Status","Total Product");
+            System.out.println(Colors.CYAN+"----------------------------------------------------------------"+Colors.RESET);
+            System.out.printf("%3s | %10s | %15s | %10s | %5s \n","ID","Name","Description","Status","Total Product");
             category.displayData();
-            System.out.println("-----------------------------------------------------");
+            System.out.println(Colors.CYAN+"----------------------------------------------------------------"+Colors.RESET);
         }else {
             System.err.println("Cant find category with ID: " + cateID);
         }
