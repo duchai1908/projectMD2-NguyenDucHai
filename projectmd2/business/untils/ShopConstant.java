@@ -8,4 +8,5 @@ public class ShopConstant {
     public static final String ADDRESS_PATH = "src/projectmd2/business/data/address.txt";
     public static final String CART_PATH = "src/projectmd2/business/data/cart.txt";
     public static final String ORDER_PATH = "src/projectmd2/business/data/order.txt";
+    public static final String WISHLIST_PATH = "src/projectmd2/business/data/wishlist.txt";
 }

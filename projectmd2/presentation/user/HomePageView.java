@@ -7,6 +7,7 @@ import projectmd2.presentation.user.cartforuser.CartMenuForUser;
 import projectmd2.presentation.user.ordermenuforuser.OrderMenuForUser;
 import projectmd2.presentation.user.productforuser.ProductMenuForUser;
 import projectmd2.presentation.user.userinformation.UserInformationMenu;
+import projectmd2.presentation.user.wishlistforuser.WishListMenu;
 
 import java.util.Scanner;
 
@@ -38,6 +39,7 @@ public class HomePageView {
                     OrderMenuForUser.showOrderMenuForUser();
                     break;
                 case 5:
+                    WishListMenu.showWishListMenu();
                     break;
                 case 6:
                     Main.userLogin = null;

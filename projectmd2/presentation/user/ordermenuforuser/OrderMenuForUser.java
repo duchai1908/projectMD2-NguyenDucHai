@@ -20,11 +20,13 @@ public class OrderMenuForUser {
                 OrderFeature.showAllOrder();
                 break;
             case 2:
+                OrderFeature.detailOrder();
                 break;
             case 3:
+                OrderFeature.displayOrderByStatus();
                 break;
             case 4:
-                break;
+                return;
             default:
                 System.err.println(ShopMessage.ERROR_ALERT);
         }

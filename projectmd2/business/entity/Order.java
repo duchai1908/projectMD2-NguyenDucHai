@@ -1,18 +1,22 @@
 package projectmd2.business.entity;
 
 import projectmd2.business.design.IOData;
+import projectmd2.business.design.IUser;
+import projectmd2.business.feature.userimpl.UserImpl;
 import projectmd2.business.untils.IOFile;
 import projectmd2.business.untils.ShopConstant;
 import projectmd2.business.untils.Validation.OrderValidate;
 import projectmd2.presentation.run.Main;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class Order implements IOData<Order,String>, Serializable {
+    private static UserImpl userList = new UserImpl();
     private int orderId,userId;
     private double totalPrice;
     private String serialNumber,note,receiveName,receiveAddress,receivePhone;
@@ -158,7 +162,8 @@ public class Order implements IOData<Order,String>, Serializable {
 
     @Override
     public void displayData() {
-        System.out.printf("%3s | %15s | %15s | %15s | %10s \n",this.orderId,this.receiveAddress,this.receivePhone,this.totalPrice,this.status);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.printf("%3s | %15s | %15s | %15s | %10s | %10s | %10s \n",this.orderId,this.receiveAddress,this.receivePhone,this.totalPrice,dateFormat.format(this.createdAt),dateFormat.format(this.receiveAt),this.status);
     }
 
     @Override
@@ -171,5 +176,19 @@ public class Order implements IOData<Order,String>, Serializable {
             }
         }
         return idMax+1;
+    }
+
+    @Override
+    public String toString() {
+        return "Order ID: " + orderId +"\n"
+                + "User Name: " + userList.findById(userId).getUserName() +"\n"
+                + "Total Price: " + totalPrice +"\n"
+                + "Serial Number: " + serialNumber +"\n"
+                + "Receive Name: " + receiveName +"\n"
+                + "Receive Address: " + receiveAddress +"\n"
+                + "Receive Phone: " + receivePhone +"\n"
+                + "Create Date: " + createdAt +"\n"
+                + "Receive At: " + receiveAt +"\n"
+                + "Status: " + status +"\n";
     }
 }

@@ -9,8 +9,10 @@ import projectmd2.business.entity.Order;
 import projectmd2.business.feature.addressimpl.AddressImpl;
 import projectmd2.business.feature.orderimpl.OrderImpl;
 import projectmd2.business.feature.productsimpl.Admin.ProductsImpl;
+import projectmd2.business.feature.userimpl.UserImpl;
 import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.InputMethods;
+import projectmd2.business.untils.ShopMessage;
 import projectmd2.presentation.run.Main;
 
 import java.util.ArrayList;
@@ -22,7 +24,12 @@ public class CartFeature {
     private static IProducts productsList = new ProductsImpl();
     private static IAddress addressList = new AddressImpl();
     private static IOrder orderList = new OrderImpl();
+    private static UserImpl userList = new UserImpl();
     public static void displayCart() {
+        if(cartList.findAll().isEmpty()){
+            System.err.println("Cart is empty");
+            return;
+        }
         System.out.println(Colors.CYAN + "*************All Product In Cart **************" + Colors.RESET);
         System.out.printf(Colors.GREEN + "%3s | %7s | %15s | %7s | %10s \n" + Colors.RESET
                 , "ID", "User Id", "Product Name", "Quantity", "Total Price");
@@ -63,6 +70,10 @@ public class CartFeature {
     }
 
     public static void removeProductFromCartById() {
+        if(cartList.findAll().isEmpty()){
+            System.err.println("Cart is empty");
+            return;
+        }
         System.out.println(Colors.CYAN + "Enter Cart ID you want to remove from Cart" + Colors.RESET);
         int cartId = InputMethods.getInteger();
         if (cartList.findById(cartId) != null && cartList.findById(cartId).getUserId() == Main.userLogin.getId()) {
@@ -75,6 +86,10 @@ public class CartFeature {
 
 
     public static void removeAllCart() {
+        if(cartList.findAll().isEmpty()){
+            System.err.println("Cart is empty");
+            return;
+        }
         List<Cart> carts = new ArrayList<>();
         for (Cart cart : cartList.findAll()) {
             if (cart.getUserId() == Main.userLogin.getId()) {
@@ -88,6 +103,10 @@ public class CartFeature {
     }
 
     public static void cartDetail() {
+        if(cartList.findAll().isEmpty()){
+            System.err.println("Cart is empty");
+            return;
+        }
         System.out.println(Colors.CYAN + "Enter Cart ID you want to change quantity" + Colors.RESET);
         int cartId = InputMethods.getInteger();
         if (cartList.findById(cartId) != null && cartList.findById(cartId).getUserId() == Main.userLogin.getId()) {
@@ -109,32 +128,64 @@ public class CartFeature {
             System.err.println("There are no products in the cart");
             return;
         }
-        double sum = 0;
-        for(Cart cart : cartList.findAll()) {
-            if(cart.getUserId() == Main.userLogin.getId()) {
-                sum += cart.getTotalPrice();
-            }
-        }
-        System.out.println("**********LIST ADDRESS*********");
-        addressList.findAll().stream().filter(a -> a.getUserId() == Main.userLogin.getId()).forEach(System.out::println);
-        System.out.println("Enter the address id you want to check out");
-        int idAdress = InputMethods.getInteger();
-        if (addressList.findById(idAdress) != null) {
-            Order newOrder = new Order();
-            newOrder.inputDataOrder(sc,true,sum,addressList.findById(idAdress));
-            orderList.save(newOrder);
-            System.out.println(Colors.GREEN+"Order added successfully" + Colors.RESET);
-            List<Cart> cartsDelete = new ArrayList<>();
-            for (Cart cart : cartList.findAll()) {
+        while (true) {
+            System.out.println("Choose payment method");
+            System.out.println("1. COD ( Cash On Delivery )");
+            System.out.println("2. Pay by e-wallet");
+            System.out.println("3. Back");
+            int choice = InputMethods.getInteger();
+            int sum = 0;
+            for(Cart cart : cartList.findAll()) {
                 if(cart.getUserId() == Main.userLogin.getId()) {
-                    cartsDelete.add(cart);
+                    sum += (int) cart.getTotalPrice();
                 }
             }
-            for (Cart cart : cartsDelete) {
-                cartList.deleteById(cart.getCartId());
+            if (choice == 1) {
+                payment(sc,sum);
+                break;
+
+            }else if (choice == 2) {
+                if(Main.userLogin.getWallet() < sum){
+                    System.err.println("You dont have enough money");
+                }else{
+                    payment(sc,sum);
+                    Main.userLogin.setWallet(Main.userLogin.getWallet() - sum);
+                    userList.save(Main.userLogin);
+                    break;
+                }
+            }else if (choice == 3) {
+                break;
+            }else{
+                System.err.println(ShopMessage.ERROR_ALERT);
             }
-        }else{
-            System.err.println("Address not found");
+        }
+    }
+
+    public static void payment(Scanner sc,int sum){
+
+        System.out.println(Colors.CYAN+"********** LIST ADDRESS *********"+Colors.RESET);
+        addressList.findAll().stream().filter(a -> a.getUserId() == Main.userLogin.getId()).forEach(System.out::println);
+        while (true) {
+            System.out.println(Colors.CYAN+"Enter the address id you want to check out"+Colors.RESET);
+            int idAdress = InputMethods.getInteger();
+            if (addressList.findById(idAdress) != null) {
+                Order newOrder = new Order();
+                newOrder.inputDataOrder(sc,true,sum,addressList.findById(idAdress));
+                orderList.save(newOrder);
+                System.out.println(Colors.GREEN+"Order added successfully" + Colors.RESET);
+                List<Cart> cartsDelete = new ArrayList<>();
+                for (Cart cart : cartList.findAll()) {
+                    if(cart.getUserId() == Main.userLogin.getId()) {
+                        cartsDelete.add(cart);
+                    }
+                }
+                for (Cart cart : cartsDelete) {
+                    cartList.deleteById(cart.getCartId());
+                }
+                break;
+            }else{
+                System.err.println("Address not found");
+            }
         }
     }
 }
