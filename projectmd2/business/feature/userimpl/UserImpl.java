@@ -35,22 +35,31 @@ public class UserImpl implements IUser, IGenericDesign<User, Integer> {
         String username = InputMethods.getString();
         System.out.println("Enter your password: ");
         String password = InputMethods.getString();
-        User userLogin = userList.stream().filter(u -> u.getUserName().equals(username)
-                && u.getPassword().equals(password) && !u.isDeleted()
-                && u.isStatus()).findFirst().orElse(null);
+        User userLogin = userList.stream().filter(u -> u.getUserName().equals(username) && u.getPassword().equals(password)).findFirst().orElse(null);
         if (userLogin != null) {
-            switch (userLogin.getRoleName()) {
-                case ADMIN:
-                case MOD:
-                    System.out.println("Login successful");
-                    DashBoardView.showDashBoardView(sc);
-                    break;
-                case USER:
-                    Main.userLogin = userLogin;
-                    HomePageView.showHomePageViewMenu();
-                    break;
-                default:
+            if(userLogin.isStatus()){
+                if(!userLogin.isDeleted()){
+                    switch (userLogin.getRoleName()) {
+                        case ADMIN:
+                        case MOD:
+                            Main.userLogin = userLogin;
+                            System.out.println("Login successful");
+                            DashBoardView.showDashBoardView(sc);
+                            break;
+                        case USER:
+                            Main.userLogin = userLogin;
+                            HomePageView.showHomePageViewMenu();
+                            break;
+                        default:
+                    }
+                }else{
+                    System.err.println("Account does not exist");
+                }
+            }else{
+                System.err.println("Your account is blocked");
             }
+        }else{
+            System.err.println("Your account does not exist");
         }
     }
 

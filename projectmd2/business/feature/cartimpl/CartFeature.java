@@ -26,7 +26,7 @@ public class CartFeature {
     private static IOrder orderList = new OrderImpl();
     private static UserImpl userList = new UserImpl();
     public static void displayCart() {
-        if(cartList.findAll().isEmpty()){
+        if(cartList.findAll().stream().noneMatch(c->c.getUserId() == Main.userLogin.getId())){
             System.err.println("Cart is empty");
             return;
         }
@@ -39,9 +39,8 @@ public class CartFeature {
     public static void addToCart(Scanner sc) {
         System.out.println(Colors.CYAN + "Enter Product ID you want to add to cart" + Colors.RESET);
         int productId = InputMethods.getInteger();
-        if (productsList.findById(productId) != null) {
-            if (cartList.findAll().stream()
-                    .anyMatch(c -> c.getProducts().getProductId() == productId && c.getUserId() == Main.userLogin.getId())) {
+        if (productsList.findById(productId) != null && productsList.findById(productId).getCategory().isStatus()) {
+            if (cartList.findAll().stream().anyMatch(c -> c.getProducts().getProductId() == productId && c.getUserId() == Main.userLogin.getId())) {
                 Cart cartDetail = cartList.findAll().stream().
                         filter(c -> c.getProducts().getProductId() == productId && c.getUserId() == Main.userLogin.getId())
                         .findFirst().orElse(null);

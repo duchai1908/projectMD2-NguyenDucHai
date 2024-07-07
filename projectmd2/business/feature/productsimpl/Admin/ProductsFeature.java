@@ -22,8 +22,8 @@ public class ProductsFeature {
             return;
         }
         System.out.println(Colors.CYAN+"-----------------------------------------------------------------------------------------------------------------"+Colors.RESET);
-        System.out.printf(Colors.GREEN+"%3s | %20s | %15s | %10s | %15s | %15s | %15s \n"+Colors.RESET
-                , "ID", "Product Name", "Description", "Unit Price", "Category", "Created At", "Updated At");
+        System.out.printf(Colors.GREEN+"%3s | %20s | %15s | %10s | %15s | %5s | %5s | %15s | %15s \n"+Colors.RESET
+                , "ID", "Product Name", "Description", "Unit Price", "Category","Stock","Sold", "Created At", "Updated At");
         productsList.findAll().forEach(Products::displayData);
         System.out.println(Colors.CYAN+"-----------------------------------------------------------------------------------------------------------------"+Colors.RESET);
         System.out.println(Colors.CYAN+"Has " + productsList.findAll().size() + " products"+Colors.RESET);
@@ -55,8 +55,8 @@ public class ProductsFeature {
         if (newProduct != null) {
             System.out.println(Colors.CYAN+"Old prodduct with ID " + productID + " information"+Colors.RESET);
             System.out.println(Colors.CYAN+"-----------------------------------------------------------------------------------------------------------------"+Colors.RESET);
-            System.out.printf(Colors.GREEN+"%3s | %20s | %15s | %10s | %15s | %15s | %15s \n"+Colors.RESET
-                    , "ID", "Product Name", "Description", "Unit Price", "Category", "Created At", "Updated At");
+            System.out.printf(Colors.GREEN+"%3s | %20s | %15s | %10s | %15s | %5s | %5s | %15s | %15s \n"+Colors.RESET
+                    , "ID", "Product Name", "Description", "Unit Price", "Category","Stock","Sold", "Created At", "Updated At");
             newProduct.displayData();
             System.out.println(Colors.CYAN+"-----------------------------------------------------------------------------------------------------------------"+Colors.RESET);
             EditProductMenu.showEditProductMenu(newProduct);
@@ -89,6 +89,8 @@ public class ProductsFeature {
         System.out.println("Enter product ID you want to search: ");
         int productID = InputMethods.getInteger();
         if (productsList.findById(productID) != null) {
+            System.out.printf(Colors.GREEN+"%3s | %20s | %15s | %10s | %15s | %5s | %5s | %15s | %15s \n"+Colors.RESET
+                    , "ID", "Product Name", "Description", "Unit Price", "Category","Stock","Sold", "Created At", "Updated At");
             productsList.findById(productID).displayData();
         }else{
             System.err.println("Cant find product with ID: " + productID);

@@ -12,7 +12,7 @@ public class UserMenuEditForAdmin {
 
     public static void showEditUserForUser(Scanner sc, User user) {
         while (true){
-            System.out.println("************EDIT USER " + user.getUserName().toUpperCase() + "**************");
+            System.out.println(Colors.CYAN+"************EDIT USER "+Colors.RESET + Colors.RED+ user.getUserName().toUpperCase()+Colors.RESET + Colors.CYAN+ "**************"+Colors.RESET);
             System.out.println("1.Edit Full Name");
             System.out.println("2.Edit Password");
             System.out.println("3.Edit Email");
@@ -22,8 +22,8 @@ public class UserMenuEditForAdmin {
             System.out.println("7.Edit Role");
             System.out.println("8.Edit Status");
             System.out.println("9.Back");
-
-            System.out.println("*********************************************");
+            System.out.println(Colors.CYAN+"*********************************************"+Colors.RESET);
+            System.out.println(Colors.GREEN+"Enter your choice"+Colors.RESET);
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:

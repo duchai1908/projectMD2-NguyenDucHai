@@ -2,6 +2,7 @@ package projectmd2.presentation.user.addressforuser;
 
 import projectmd2.business.entity.Address;
 import projectmd2.business.feature.addressimpl.AddressFeature;
+import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.InputMethods;
 import projectmd2.business.untils.ShopMessage;
 
@@ -11,15 +12,15 @@ public class AddressForUserMenu {
     public static void addressForUserMenu() {
         Scanner sc = new Scanner(System.in);
         while (true){
-            System.out.println("********************ADDRESS MENU**********************");
+            System.out.println(Colors.CYAN+"******************** ADDRESS MENU **********************"+Colors.RESET);
             System.out.println("1. List Address");
             System.out.println("2. Add Address");
             System.out.println("3. Edit Address");
             System.out.println("4. Delete Address By Id");
             System.out.println("5. Search Address By Id");
             System.out.println("6. Back");
-            System.out.println("******************************************************");
-            System.out.println("Enter your choice: ");
+            System.out.println(Colors.CYAN+"********************************************************"+Colors.RESET);
+            System.out.println(Colors.GREEN+"Enter your choice"+Colors.RESET);
             byte choiceAddress = InputMethods.getByte();
             switch (choiceAddress) {
                 case 1:

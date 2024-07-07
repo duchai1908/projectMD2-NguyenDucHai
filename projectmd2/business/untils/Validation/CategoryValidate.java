@@ -10,13 +10,14 @@ import java.util.Scanner;
 
 public class CategoryValidate {
     private static ICategory iCategory = new CategoryImpl();
-    public static String inputCategoryName(Scanner sc) {
-        while (true){
+
+    public static String inputCategoryName(String categoryName) {
+        while (true) {
             System.out.println("Enter Category Name: ");
-            String categoryName = InputMethods.getString();
-            if(iCategory.findAll().stream().noneMatch(e-> (e.getCategoryName().equals(categoryName)))){
-                return categoryName;
-            }else{
+            String newCategoryName = InputMethods.getString();
+            if (categoryName.equals(newCategoryName) || iCategory.findAll().stream().noneMatch(e -> (e.getCategoryName().equals(newCategoryName)))) {
+                return newCategoryName;
+            } else {
                 System.err.println(ShopMessage.ERROR_CATEGORY_EXIST);
             }
         }

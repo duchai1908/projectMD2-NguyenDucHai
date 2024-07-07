@@ -14,6 +14,10 @@ public class WishListFeature {
 
     //Display All Wishlist by User Login
     public static void displayAllWishlist() {
+        if(wishlist.findAll().stream().noneMatch(w->w.getUserWishList().getId() == Main.userLogin.getId())){
+            System.err.println("Wishlist is empty");
+            return;
+        }
         System.out.println(Colors.CYAN+"***********LIST WISHLIST**************"+Colors.RESET);
         System.out.printf(Colors.GREEN+"%3s | %20s | %20s \n" +Colors.RESET, "ID", "User Name", "Product");
         wishlist.findAll().stream().filter(w->w.getUserWishList().getId() == Main.userLogin.getId()).forEach(WishList::displayData);
@@ -38,7 +42,11 @@ public class WishListFeature {
     }
 
     public static void removeProductFromWishlist() {
-        System.out.println(Colors.CYAN+"Enter product id you want to remove from your Wishlist"+Colors.RESET);
+        if(wishlist.findAll().stream().noneMatch(w->w.getUserWishList().getId() == Main.userLogin.getId())){
+            System.err.println("Wishlist is empty");
+            return;
+        }
+        System.out.println(Colors.CYAN+"Enter wishlist id you want to remove from your Wishlist"+Colors.RESET);
         int productId = InputMethods.getInteger();
         if(products.findById(productId) != null) {
             wishlist.deleteById(productId);

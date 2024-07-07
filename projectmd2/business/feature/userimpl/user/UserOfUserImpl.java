@@ -5,8 +5,11 @@ import projectmd2.business.feature.userimpl.UserImpl;
 import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.InputMethods;
 import projectmd2.business.untils.ShopMessage;
+import projectmd2.business.untils.Validation.UserValidate;
 import projectmd2.presentation.run.Main;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class UserOfUserImpl {
@@ -29,10 +32,13 @@ public class UserOfUserImpl {
     }
 
     public static void changePassword() {
+        Scanner sc = new Scanner(System.in);
         System.out.println(Colors.CYAN + "Enter old password" + Colors.RESET);
         String oldPassword = InputMethods.getString();
         if (oldPassword.equals(Main.userLogin.getPassword())) {
-            Main.userLogin.setPassword(oldPassword);
+            System.out.println(Colors.CYAN+"Enter new password" + Colors.RESET);
+            String newPassword = UserValidate.inputPassword(sc);
+            Main.userLogin.setPassword(newPassword);
             userList.save(Main.userLogin);
             System.out.println(Colors.GREEN + "Password changed successfully" + Colors.RESET);
         } else {
@@ -50,30 +56,32 @@ public class UserOfUserImpl {
         System.out.println(Colors.CYAN + "**********************************************" + Colors.RESET);
         System.out.println("Enter your choice");
         byte choice = InputMethods.getByte();
+        Locale localeVN = new Locale("vi","VN");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(localeVN);
         switch (choice) {
             case 1:
                 Main.userLogin.setWallet(Main.userLogin.getWallet() + rechargeMoney(FIFTY));
                 userList.save(Main.userLogin);
                 System.out.println(Colors.GREEN + "Wallet changed successfully" + Colors.RESET);
-                System.out.println(Colors.GREEN + "Your Wallet: " + Main.userLogin.getWallet() + Colors.RESET);
+                System.out.println(Colors.GREEN + "Your Wallet: " + currencyFormatter.format(Main.userLogin.getWallet()) + Colors.RESET);
                 break;
             case 2:
                 Main.userLogin.setWallet(Main.userLogin.getWallet() + rechargeMoney(ONEHUNDRED));
                 userList.save(Main.userLogin);
                 System.out.println(Colors.GREEN + "Wallet changed successfully" + Colors.RESET);
-                System.out.println(Colors.GREEN + "Your Wallet: " + Main.userLogin.getWallet() + Colors.RESET);
+                System.out.println(Colors.GREEN + "Your Wallet: " + currencyFormatter.format(Main.userLogin.getWallet()) + Colors.RESET);
                 break;
             case 3:
                 Main.userLogin.setWallet(Main.userLogin.getWallet() + rechargeMoney(TWOHUNDRED));
                 userList.save(Main.userLogin);
                 System.out.println(Colors.GREEN + "Wallet changed successfully" + Colors.RESET);
-                System.out.println(Colors.GREEN + "Your Wallet: " + Main.userLogin.getWallet() + Colors.RESET);
+                System.out.println(Colors.GREEN + "Your Wallet: " + currencyFormatter.format(Main.userLogin.getWallet()) + Colors.RESET);
                 break;
             case 4:
                 Main.userLogin.setWallet(Main.userLogin.getWallet() + rechargeMoney(FIVEHUNDRED));
                 userList.save(Main.userLogin);
                 System.out.println(Colors.GREEN + "Wallet changed successfully" + Colors.RESET);
-                System.out.println(Colors.GREEN + "Your Wallet: " + Main.userLogin.getWallet() + Colors.RESET);
+                System.out.println(Colors.GREEN + "Your Wallet: " + currencyFormatter.format(Main.userLogin.getWallet()) + Colors.RESET);
                 break;
             case 5:
                 return;

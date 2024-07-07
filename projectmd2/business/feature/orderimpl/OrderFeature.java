@@ -1,62 +1,193 @@
 package projectmd2.business.feature.orderimpl;
 
 import projectmd2.business.design.IOrder;
+import projectmd2.business.design.IProducts;
+import projectmd2.business.entity.Cart;
 import projectmd2.business.entity.Order;
+import projectmd2.business.entity.Products;
 import projectmd2.business.entity.Status;
+import projectmd2.business.feature.productsimpl.Admin.ProductsImpl;
 import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.InputMethods;
+import projectmd2.business.untils.ShopMessage;
 import projectmd2.presentation.run.Main;
+
+import java.util.List;
 
 public class OrderFeature {
     private static IOrder orderList = new OrderImpl();
-
+    private static IProducts productList = new ProductsImpl();
     //Display All Order From UserLogin
-    public static void showAllOrder() {
-        if(orderList.findAll().stream().noneMatch(o->o.getUserId() == Main.userLogin.getId())){
-            System.err.println("Order list is empty");
-            return;
+    public static void showAllOrder(boolean isAdmin) {
+        if (!isAdmin) {
+            if (orderList.findAll().stream().noneMatch(o -> o.getUserId() == Main.userLogin.getId())) {
+                System.err.println("Order list is empty");
+                return;
+            }
+
+        } else {
+            if (orderList.findAll().isEmpty()) {
+                System.err.println("Order list is empty");
+                return;
+            }
         }
-        System.out.println(Colors.CYAN+"*************** Order History ***************"+Colors.RESET);
-        System.out.printf(Colors.GREEN+"%3s | %15s | %15s | %15s | %10s | %10s | %10s \n"
-                ,"ID","ADDRESS","RECEIVE PHONE","PRICE","ORDER AT", "RECEIVE AT","STATUS"+Colors.RESET);
-        orderList.findAll().stream().filter(o->o.getUserId() == Main.userLogin.getId()).forEach(Order::displayData);
+        System.out.println(Colors.CYAN + "*************** Order History ***************" + Colors.RESET);
+        System.out.printf(Colors.GREEN + "%3s | %15s | %15s | %15s | %10s | %10s | %10s \n"
+                , "ID", "ADDRESS", "RECEIVE PHONE", "PRICE", "ORDER AT", "RECEIVE AT", "STATUS" + Colors.RESET);
+        if (isAdmin) {
+            orderList.findAll().forEach(Order::displayData);
+        } else {
+            orderList.findAll().stream().filter(o -> o.getUserId() == Main.userLogin.getId()).forEach(Order::displayData);
+        }
+
     }
 
     //Display Order Detail By Order Id And UserLogin
-    public static void detailOrder() {
-        if(orderList.findAll().isEmpty()){
-            System.err.println("Order list is empty");
-            return;
+    public static void detailOrder(boolean isAdmin) {
+        if (isAdmin) {
+            if (orderList.findAll().isEmpty()) {
+                System.err.println("Order list is empty");
+                return;
+            }
+        } else {
+            if (orderList.findAll().stream().noneMatch(o -> o.getUserId() == Main.userLogin.getId())) {
+                System.err.println("Order list is empty");
+                return;
+            }
         }
-        System.out.println(Colors.CYAN+"Enter Order ID you want to show the details of the order"+Colors.RESET);
+        System.out.println(Colors.CYAN + "Enter Order ID you want to show the details of the order" + Colors.RESET);
         int orderId = InputMethods.getInteger();
-        if(orderList.findById(orderId) != null && orderList.findById(orderId).getUserId() == Main.userLogin.getId()) {
-            System.out.println(orderList.findById(orderId));
-        }else{
-            System.err.println("Order not found");
+        if (isAdmin) {
+            if (orderList.findById(orderId) != null) {
+                orderList.findById(orderId).displayDetail();
+            } else {
+                System.err.println("Order not found");
+            }
+        } else {
+            if (orderList.findById(orderId) != null && orderList.findById(orderId).getUserId() == Main.userLogin.getId()) {
+                orderList.findById(orderId).displayDetail();
+            } else {
+                System.err.println("Order not found");
+            }
         }
     }
 
     //Display All Order By Status
-    public static void displayOrderByStatus() {
-        if(orderList.findAll().isEmpty()){
-            System.err.println("Order list is empty");
-            return;
+    public static void displayOrderByStatus(boolean isAdmin) {
+        if (!isAdmin) {
+            if (orderList.findAll().stream().noneMatch(o -> o.getUserId() == Main.userLogin.getId())) {
+                System.err.println("Order list is empty");
+                return;
+            }
+
+        }else{
+            if (orderList.findAll().isEmpty()) {
+                System.err.println("Order list is empty");
+                return;
+            }
         }
-        System.out.println(Colors.CYAN+"**********LIST STATUS ***********"+Colors.RESET);
+        System.out.println(Colors.CYAN + "**********LIST STATUS ***********" + Colors.RESET);
         Status[] statuses = Status.values();
-        int count =1;
-        for(Status status : statuses) {
-            System.out.println(count+". "+status);
+        int count = 1;
+        for (Status status : statuses) {
+            System.out.println(count + ". " + status);
             count++;
         }
-        System.out.println(Colors.CYAN+"Enter status you want to show"+Colors.RESET);
-        String status = InputMethods.getString();
-        Status inputStatus = Status.valueOf(status);
-        if(orderList.findAll().stream().anyMatch(o -> o.getStatus().equals(inputStatus) && o.getUserId() == Main.userLogin.getId())){
-            orderList.findAll().stream().filter(o->o.getStatus().equals(inputStatus) && o.getUserId() == Main.userLogin.getId()).forEach(Order::displayData);
+
+        String status;
+        Status inputStatus;
+       while (true){
+           try {
+               System.out.println(Colors.CYAN + "Enter status you want to show" + Colors.RESET);
+               status = InputMethods.getString();
+               inputStatus = Status.valueOf(status);
+               break;
+           }catch (Exception e){
+               System.err.println("Invalid Status, Please Try Again!");
+           }
+       }
+
+        Status finalInputStatus = inputStatus;
+        if(!isAdmin){
+            if(orderList.findAll().stream().noneMatch(o -> o.getUserId() == Main.userLogin.getId() && o.getStatus().equals(finalInputStatus))) {
+                System.err.println("Order not found");
+            }else{
+                System.out.println(Colors.CYAN + "*************** Order By Status ***************" + Colors.RESET);
+                System.out.printf(Colors.GREEN + "%3s | %15s | %15s | %15s | %10s | %10s | %10s \n"
+                        , "ID", "ADDRESS", "RECEIVE PHONE", "PRICE", "ORDER AT", "RECEIVE AT", "STATUS" + Colors.RESET);
+                orderList.findAll().stream().filter(o -> o.getStatus().equals(finalInputStatus) && o.getUserId() == Main.userLogin.getId()).forEach(Order::displayData);
+                System.out.println(Colors.GREEN+"Has found "
+                        + orderList.findAll().stream().filter(o -> o.getStatus().equals(finalInputStatus) && o.getUserId() == Main.userLogin.getId() ).count()
+                        +" orders with status " + finalInputStatus + Colors.RESET);
+            }
+        }else{
+            if(orderList.findAll().stream().noneMatch(o ->o.getStatus().equals(finalInputStatus))) {
+                System.err.println("Order not found");
+            }else{
+                System.out.println(Colors.CYAN + "*************** Order By Status ***************" + Colors.RESET);
+                System.out.printf(Colors.GREEN + "%3s | %15s | %15s | %15s | %10s | %10s | %10s \n"
+                        , "ID", "ADDRESS", "RECEIVE PHONE", "PRICE", "ORDER AT", "RECEIVE AT", "STATUS" + Colors.RESET);
+                orderList.findAll().stream().filter(o -> o.getStatus().equals(finalInputStatus) ).forEach(Order::displayData);
+                System.out.println(Colors.GREEN+"Has found "
+                        + orderList.findAll().stream().filter(o -> o.getStatus().equals(finalInputStatus) ).count()
+                        +" orders with status: " + finalInputStatus + Colors.RESET);
+            }
+
+        }
+    }
+
+
+    public static void changeStatus() {
+        System.out.println("Enter order ID you want to change status");
+        int orderId = InputMethods.getInteger();
+        if(orderList.findById(orderId) != null) {
+            System.out.println(Colors.CYAN + "**********LIST STATUS ***********" + Colors.RESET);
+            Status[] statuses = Status.values();
+            int count = 1;
+            for (Status status : statuses) {
+                System.out.println(count + ". " + status);
+                count++;
+            }
+            Status inputStatus;
+            while (true){
+                try {
+                    System.out.println(Colors.CYAN+"Enter status you want to change " + Colors.RESET);
+                    inputStatus = Status.valueOf(InputMethods.getString());
+                    break;
+                }catch (Exception e){
+                    System.err.println("Invalid Status, Please Try Again!");
+                }
+            }
+            updateQuantityProduct(orderList.findById(orderId), inputStatus);
+            orderList.findById(orderId).setStatus(inputStatus);
+            orderList.save(orderList.findById(orderId));
+            System.out.println(Colors.GREEN+"Order status changed to " +inputStatus  + Colors.RESET);
         }else{
             System.err.println("Order not found");
+        }
+    }
+
+    private static void updateQuantityProduct(Order oldStatus, Status newStatus){
+        if(oldStatus.getStatus() != Status.SUCCESS && newStatus == Status.SUCCESS){
+            List<Cart> cart = oldStatus.getCarts();
+            for(Cart c: cart){
+                if(productList.findAll().stream().anyMatch(p->p.getProductId() == c.getProducts().getProductId())){
+                    Products newProducts = productList.findById(c.getProducts().getProductId());
+                    newProducts.setStockQuantity(newProducts.getStockQuantity() - c.getQuantity());
+                    newProducts.setSelled(newProducts.getSelled() + c.getQuantity());
+                    productList.save(newProducts);
+                }
+            }
+        } else if (oldStatus.getStatus() == Status.SUCCESS && newStatus != Status.SUCCESS) {
+            List<Cart> cart = oldStatus.getCarts();
+            for(Cart c: cart){
+                if(productList.findAll().stream().anyMatch(p->p.getProductId() == c.getProducts().getProductId())){
+                    Products newProducts = productList.findById(c.getProducts().getProductId());
+                    newProducts.setStockQuantity(newProducts.getStockQuantity() + c.getQuantity());
+                    newProducts.setSelled(newProducts.getSelled() - c.getQuantity());
+                    productList.save(newProducts);
+                }
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ public class WishListMenu {
             System.out.println("3. Remove Product from Wish List");
             System.out.println("4. Back to Main Menu");
             System.out.println(Colors.CYAN + "*************************************************" + Colors.RESET);
+            System.out.println(Colors.GREEN+"Enter your choice"+Colors.RESET);
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:

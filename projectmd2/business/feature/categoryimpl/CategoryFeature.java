@@ -8,6 +8,7 @@ import projectmd2.business.feature.productsimpl.Admin.ProductsImpl;
 import projectmd2.business.untils.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,8 +33,9 @@ public class CategoryFeature {
         int cateNumber = InputMethods.getInteger();
         for (int i = 0; i < cateNumber; i++) {
             System.out.println(Colors.GREEN + "Add category " + (i + 1) + Colors.RESET);
+            String name = "";
             Category category = new Category();
-            category.inputData(sc, true);
+            category.inputCategoryData(name, true);
             categoryList.save(category);
         }
         System.out.println(Colors.GREEN+"Add " + cateNumber + " category successfully"+Colors.RESET);
@@ -49,10 +51,10 @@ public class CategoryFeature {
         int cateID = InputMethods.getInteger();
         Category category = categoryList.findById(cateID);
         if (category != null) {
-            System.out.println(Colors.CYAN + " Old information of catrgory with ID: "+ cateID +Colors.RESET);
+            System.out.println(Colors.CYAN + "Old information of catrgory with ID: "+ cateID +Colors.RESET);
             category.displayData();
-            System.out.println(Colors.CYAN + " New category information: "+Colors.RESET);
-            category.inputData(sc,false);
+            System.out.println(Colors.CYAN + "New category information: "+Colors.RESET);
+            category.inputCategoryData(category.getCategoryName(),false);
             categoryList.save(category);
             System.out.println(Colors.GREEN+"Edit category with ID: " + cateID + " successfully"+Colors.RESET);
         }else {

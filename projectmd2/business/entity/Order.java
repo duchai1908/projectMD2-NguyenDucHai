@@ -3,6 +3,7 @@ package projectmd2.business.entity;
 import projectmd2.business.design.IOData;
 import projectmd2.business.design.IUser;
 import projectmd2.business.feature.userimpl.UserImpl;
+import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.IOFile;
 import projectmd2.business.untils.ShopConstant;
 import projectmd2.business.untils.Validation.OrderValidate;
@@ -177,18 +178,23 @@ public class Order implements IOData<Order,String>, Serializable {
         }
         return idMax+1;
     }
-
-    @Override
-    public String toString() {
-        return "Order ID: " + orderId +"\n"
-                + "User Name: " + userList.findById(userId).getUserName() +"\n"
-                + "Total Price: " + totalPrice +"\n"
-                + "Serial Number: " + serialNumber +"\n"
-                + "Receive Name: " + receiveName +"\n"
-                + "Receive Address: " + receiveAddress +"\n"
-                + "Receive Phone: " + receivePhone +"\n"
-                + "Create Date: " + createdAt +"\n"
-                + "Receive At: " + receiveAt +"\n"
-                + "Status: " + status +"\n";
+    public void displayDetail(){
+        System.out.println("Order ID: " + orderId);
+        System.out.println("User Name: " + userList.findById(userId).getUserName());
+        System.out.println("Total Price: " + totalPrice);
+        System.out.println("Serial Number: " + serialNumber);
+        showProduct();
+        System.out.printf("Receive Name: %s \n", receiveName);
+        System.out.println("Receive Address: " + receiveAddress);
+        System.out.println("Receive Phone: " + receivePhone);
+        System.out.println("Create Date: " + createdAt);
+        System.out.println("Receive At: " + receiveAt);
+        System.out.println("Status: " + status);
+    }
+    public void showProduct(){
+        System.out.printf(Colors.GREEN+"%20s | %5s \n" +Colors.RESET,"Product Name","Quantity");
+        for(Cart c: this.carts){
+            System.out.printf("%20s | %5s \n",c.getProducts().getProductName(),c.getQuantity());
+        }
     }
 }

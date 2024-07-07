@@ -63,11 +63,14 @@ public class Category implements IOData<Category,String>, Serializable {
 
     @Override
     public void inputData(Scanner sc, boolean isAdd) {
-        List<Category> categories = null;
+
+    }
+    public void inputCategoryData(String categoryName,boolean isAdd) {
         if(isAdd){
+            List<Category> categories = null;
             this.categoryId = getNewId(categories, ShopConstant.CATEGORY_PATH);
         }
-        this.categoryName = CategoryValidate.inputCategoryName(sc);
+        this.categoryName = CategoryValidate.inputCategoryName(categoryName);
         this.descriptions = CategoryValidate.inputCategoryDescriptions();
         this.status = CategoryValidate.inputCategoryStatus();
     }
@@ -105,6 +108,4 @@ public class Category implements IOData<Category,String>, Serializable {
         }
         return count;
     }
-
-
 }

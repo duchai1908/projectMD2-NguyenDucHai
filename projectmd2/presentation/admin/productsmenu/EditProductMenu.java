@@ -5,25 +5,24 @@ import projectmd2.business.design.IProducts;
 import projectmd2.business.entity.Products;
 import projectmd2.business.feature.categoryimpl.CategoryImpl;
 import projectmd2.business.feature.productsimpl.Admin.ProductsImpl;
-import projectmd2.business.untils.IOFile;
-import projectmd2.business.untils.InputMethods;
-import projectmd2.business.untils.ShopConstant;
-import projectmd2.business.untils.ShopMessage;
+import projectmd2.business.untils.*;
+
+import java.awt.*;
 
 public class EditProductMenu {
     private static IProducts productsList = new ProductsImpl();
     private static ICategory categoryList = new CategoryImpl();
     public static void showEditProductMenu(Products product) {
         while (true) {
-            System.out.println("****************EDIT PRODUCT MENU****************");
+            System.out.println(Color.CYAN+"**************** EDIT PRODUCT MENU ****************"+ Colors.RESET);
             System.out.println("1. Edit Product Name");
             System.out.println("2. Edit Product Description");
             System.out.println("3. Edit Product Price");
             System.out.println("4. Edit Product Quantity");
             System.out.println("5. Edit Product Category");
             System.out.println("6. Exit");
-            System.out.println("**************************************************");
-            System.out.println("Enter your choice: ");
+            System.out.println(Color.CYAN+"***************************************************"+ Colors.RESET);
+            System.out.println(Colors.GREEN+"Enter your choice"+Colors.RESET);
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
