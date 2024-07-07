@@ -93,12 +93,12 @@ public class CategoryFeature {
             System.err.println("No Category Found");
             return;
         }
-        System.out.println("Enter the ID of the category you want to search: ");
+        System.out.println(Colors.CYAN+"Enter the ID of the category you want to search"+Colors.RESET);
         int cateID = InputMethods.getInteger();
         Category category = categoryList.findById(cateID);
         if (category != null) {
             System.out.println(Colors.CYAN+"----------------------------------------------------------------"+Colors.RESET);
-            System.out.printf("%3s | %10s | %15s | %10s | %5s \n","ID","Name","Description","Status","Total Product");
+            System.out.printf(Colors.GREEN+"%3s | %10s | %15s | %10s | %5s \n"+Colors.RESET,"ID","Name","Description","Status","Total Product");
             category.displayData();
             System.out.println(Colors.CYAN+"----------------------------------------------------------------"+Colors.RESET);
         }else {

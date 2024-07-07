@@ -9,6 +9,7 @@ import projectmd2.business.untils.ShopMessage;
 import projectmd2.presentation.admin.DashBoardView;
 import projectmd2.presentation.admin.categorymenu.CategoryMenu;
 import projectmd2.presentation.admin.securityquestion.SecurityQuestionMenu;
+import projectmd2.presentation.user.GuestView;
 
 import java.util.Scanner;
 
@@ -29,7 +30,7 @@ public class Main {
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
-                    DashBoardView.showDashBoardView(sc);
+                    GuestView.showGuestView();
                     break;
                 case 2:
                     userLits.login();
