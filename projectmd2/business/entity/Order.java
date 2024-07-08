@@ -1,7 +1,6 @@
 package projectmd2.business.entity;
 
 import projectmd2.business.design.IOData;
-import projectmd2.business.design.IUser;
 import projectmd2.business.feature.userimpl.UserImpl;
 import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.IOFile;
@@ -11,7 +10,6 @@ import projectmd2.presentation.run.Main;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -24,11 +22,12 @@ public class Order implements IOData<Order,String>, Serializable {
     private Date createdAt,receiveAt;
     private List<Cart> carts;
     private Status status;
+    private Payments payments;
 
     public Order() {
     }
 
-    public Order(int orderId, int userId, double totalPrice, String serialNumber, String note, String receiveName, String receiveAddress, String receivePhone, Date createdAt, Date receiveAt, List<Cart> carts, Status status) {
+    public Order(int orderId, int userId, double totalPrice, String serialNumber, String note, String receiveName, String receiveAddress, String receivePhone, Date createdAt, Date receiveAt, List<Cart> carts, Status status, Payments payments) {
         this.orderId = orderId;
         this.userId = userId;
         this.totalPrice = totalPrice;
@@ -41,6 +40,7 @@ public class Order implements IOData<Order,String>, Serializable {
         this.receiveAt = receiveAt;
         this.carts = carts;
         this.status = status;
+        this.payments = payments;
     }
 
     public int getOrderId() {
@@ -139,6 +139,14 @@ public class Order implements IOData<Order,String>, Serializable {
         this.status = status;
     }
 
+    public Payments getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Payments payments) {
+        this.payments = payments;
+    }
+
     @Override
     public void inputData(Scanner sc, boolean isAdd) {
 
@@ -164,7 +172,7 @@ public class Order implements IOData<Order,String>, Serializable {
     @Override
     public void displayData() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        System.out.printf("%3s | %15s | %15s | %15s | %10s | %10s | %10s \n",this.orderId,this.receiveAddress,this.receivePhone,this.totalPrice,dateFormat.format(this.createdAt),dateFormat.format(this.receiveAt),this.status);
+        System.out.printf("%3s | %15s | %15s | %15s | %7s | %10s | %10s | %10s \n",this.orderId,this.receiveAddress,this.receivePhone,this.totalPrice,this.payments,dateFormat.format(this.createdAt),dateFormat.format(this.receiveAt),this.status);
     }
 
     @Override
@@ -187,6 +195,7 @@ public class Order implements IOData<Order,String>, Serializable {
         System.out.printf("Receive Name: %s \n", receiveName);
         System.out.println("Receive Address: " + receiveAddress);
         System.out.println("Receive Phone: " + receivePhone);
+        System.out.println("Payments: " +payments);
         System.out.println("Create Date: " + createdAt);
         System.out.println("Receive At: " + receiveAt);
         System.out.println("Status: " + status);

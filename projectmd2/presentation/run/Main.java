@@ -6,9 +6,6 @@ import projectmd2.business.feature.userimpl.UserImpl;
 import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.InputMethods;
 import projectmd2.business.untils.ShopMessage;
-import projectmd2.presentation.admin.DashBoardView;
-import projectmd2.presentation.admin.categorymenu.CategoryMenu;
-import projectmd2.presentation.admin.securityquestion.SecurityQuestionMenu;
 import projectmd2.presentation.user.GuestView;
 
 import java.util.Scanner;

@@ -6,6 +6,7 @@ import projectmd2.business.design.IOrder;
 import projectmd2.business.design.IProducts;
 import projectmd2.business.entity.Cart;
 import projectmd2.business.entity.Order;
+import projectmd2.business.entity.Payments;
 import projectmd2.business.feature.addressimpl.AddressImpl;
 import projectmd2.business.feature.orderimpl.OrderImpl;
 import projectmd2.business.feature.productsimpl.Admin.ProductsImpl;
@@ -129,39 +130,64 @@ public class CartFeature {
         }
         while (true) {
             System.out.println("Choose payment method");
-            System.out.println("1. COD ( Cash On Delivery )");
-            System.out.println("2. Pay by e-wallet");
-            System.out.println("3. Back");
-            int choice = InputMethods.getInteger();
+            Payments[] pay = Payments.values();
+            for (int i = 0; i < pay.length; i++) {
+                System.out.println((i+1) + ". " + pay[i].name());
+            }
+//            System.out.println("1. COD ( Cash On Delivery )");
+//            System.out.println("2. Pay by e-wallet");
+//            System.out.println("Back");
+            Payments inputPayments;
+            while (true){
+                try{  System.out.println(Colors.GREEN+"Enter your choice"+Colors.RESET);
+                    inputPayments = Payments.valueOf(InputMethods.getString());
+                    break;
+                }catch (Exception e){
+                    System.err.println("Invalid choice,Please try again");
+                }
+            }
+
             int sum = 0;
             for(Cart cart : cartList.findAll()) {
                 if(cart.getUserId() == Main.userLogin.getId()) {
                     sum += (int) cart.getTotalPrice();
                 }
             }
-            if (choice == 1) {
-                payment(sc,sum);
-                break;
-
-            }else if (choice == 2) {
-                if(Main.userLogin.getWallet() < sum){
+            if(inputPayments == Payments.ONLINE){
+                if(Main.userLogin.getWallet() < sum ){
                     System.err.println("You dont have enough money");
                 }else{
-                    payment(sc,sum);
+                    payment(sc,sum,inputPayments);
                     Main.userLogin.setWallet(Main.userLogin.getWallet() - sum);
                     userList.save(Main.userLogin);
                     break;
                 }
-            }else if (choice == 3) {
-                break;
             }else{
-                System.err.println(ShopMessage.ERROR_ALERT);
+                payment(sc,sum,inputPayments);
+                break;
             }
+//            if (choice == 1) {
+//                payment(sc,sum);
+//                break;
+//
+//            }else if (choice == 2) {
+//                if(Main.userLogin.getWallet() < sum){
+//                    System.err.println("You dont have enough money");
+//                }else{
+//                    payment(sc,sum);
+//                    Main.userLogin.setWallet(Main.userLogin.getWallet() - sum);
+//                    userList.save(Main.userLogin);
+//                    break;
+//                }
+//            }else if (choice == 3) {
+//                break;
+//            }else{
+//                System.err.println(ShopMessage.ERROR_ALERT);
+//            }
         }
     }
 
-    public static void payment(Scanner sc,int sum){
-
+    public static void payment(Scanner sc,int sum, Payments inputPayments){
         System.out.println(Colors.CYAN+"********** LIST ADDRESS *********"+Colors.RESET);
         addressList.findAll().stream().filter(a -> a.getUserId() == Main.userLogin.getId()).forEach(System.out::println);
         while (true) {
@@ -170,6 +196,7 @@ public class CartFeature {
             if (addressList.findById(idAdress) != null) {
                 Order newOrder = new Order();
                 newOrder.inputDataOrder(sc,true,sum,addressList.findById(idAdress));
+                newOrder.setPayments(inputPayments);
                 orderList.save(newOrder);
                 System.out.println(Colors.GREEN+"Order added successfully" + Colors.RESET);
                 List<Cart> cartsDelete = new ArrayList<>();

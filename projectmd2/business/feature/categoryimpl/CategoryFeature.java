@@ -57,6 +57,12 @@ public class CategoryFeature {
             category.inputCategoryData(category.getCategoryName(),false);
             categoryList.save(category);
             System.out.println(Colors.GREEN+"Edit category with ID: " + cateID + " successfully"+Colors.RESET);
+            for(Products p: productList.findAll()){
+                if(p.getCategory().getCategoryId() == category.getCategoryId()){
+                    p.setCategory(category);
+                    productList.save(p);
+                }
+            }
         }else {
             System.err.println("Cant find category with ID: " + cateID);
         }

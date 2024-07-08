@@ -44,6 +44,7 @@ public class DashBoardView {
                     break;
                 case 6:
                     StatisticsMenu.showStatisticsMenu();
+                    break;
                 case 7:
                     return;
                 default:

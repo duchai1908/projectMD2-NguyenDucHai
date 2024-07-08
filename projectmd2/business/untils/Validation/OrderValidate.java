@@ -2,6 +2,7 @@ package projectmd2.business.untils.Validation;
 
 import projectmd2.business.design.ICart;
 import projectmd2.business.entity.Cart;
+import projectmd2.business.entity.Payments;
 import projectmd2.business.feature.cartimpl.CartImpl;
 import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.InputMethods;
@@ -43,4 +44,8 @@ public class OrderValidate {
         Date deliveryDate = calendar.getTime();
         return deliveryDate;
     }
+
+//    public static Payments inputPayment() {
+//
+//    }
 }

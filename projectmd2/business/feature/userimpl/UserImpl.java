@@ -8,6 +8,7 @@ import projectmd2.business.entity.Address;
 import projectmd2.business.entity.SecurityQuestion;
 import projectmd2.business.entity.User;
 import projectmd2.business.feature.designImpl.SecurityQuestionImpl;
+import projectmd2.business.untils.Colors;
 import projectmd2.business.untils.IOFile;
 
 import projectmd2.business.untils.InputMethods;
@@ -30,7 +31,7 @@ public class UserImpl implements IUser, IGenericDesign<User, Integer> {
     @Override
     public void login() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("******************LOGIN******************");
+        System.out.println(Colors.CYAN+"******************LOGIN******************"+Colors.RESET);
         System.out.println("Enter your username: ");
         String username = InputMethods.getString();
         System.out.println("Enter your password: ");
@@ -43,7 +44,7 @@ public class UserImpl implements IUser, IGenericDesign<User, Integer> {
                         case ADMIN:
                         case MOD:
                             Main.userLogin = userLogin;
-                            System.out.println("Login successful");
+                            System.out.println(Colors.GREEN+"Login successful"+Colors.RESET);
                             DashBoardView.showDashBoardView(sc);
                             break;
                         case USER:
@@ -65,12 +66,12 @@ public class UserImpl implements IUser, IGenericDesign<User, Integer> {
 
     @Override
     public void register() {
-        System.out.println("******************REGISTER******************");
+        System.out.println(Colors.CYAN+"******************REGISTER******************"+Colors.RESET);
         Scanner sc = new Scanner(System.in);
         User user = new User();
         user.inputData(sc, true);
         userList.add(user);
-        System.out.println("Registered Successfully");
+        System.out.println(Colors.GREEN+"Registered Successfully"+Colors.RESET);
         IOFile.writeToFile(ShopConstant.USER_PATH, userList);
         List<Address> addressList = IOFile.readFromFile(ShopConstant.ADDRESS_PATH);
         Address address = new Address();
@@ -118,7 +119,7 @@ public class UserImpl implements IUser, IGenericDesign<User, Integer> {
 
     @Override
     public void forgotPassword() {
-        System.out.println("******************VERIFY ACCOUNT******************");
+        System.out.println(Colors.CYAN+"******************VERIFY ACCOUNT******************"+Colors.RESET);
         System.out.println("Enter UserName");
         String username = InputMethods.getString();
         User user = userList.stream().filter(u -> u.getUserName().equals(username)).findFirst().orElse(null);
